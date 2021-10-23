@@ -1,24 +1,24 @@
-import { Product } from "./product.model";
+import { Product } from "./books.model";
 import { Injectable } from "@nestjs/common";
 
 @Injectable()
-export class ProductsService {
-    products: Product[] = [
+export class booksService {
+    books: Product[] = [
         new Product('LIV01', "Livro TDD E BDD na prática", 29.90),
         new Product('LIV02', "Iniciando com Fluter", 39.90),
         new Product('LIV03', "Inteligencia artificial", 29.90),
     ];
 
     getAll(): Product[] {
-        return this.products;
+        return this.books;
     }
 
     getById(id: number): Product {
-        return this.products[0];
+        return this.books[0];
     }
 
     create(product: Product) {
-        this.products.push(product);
+        this.books.push(product);
     }
 
     update(product: Product): Product {
@@ -26,6 +26,6 @@ export class ProductsService {
     }
 
     exclud(id: number) {
-        this.products.pop();
+        this.books.pop();
     }
 }
