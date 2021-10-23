@@ -7,7 +7,7 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { Product } from './books.model';
+import { Book } from './books.model';
 import { booksService } from './books.service';
 
 @Controller('books')
@@ -17,28 +17,28 @@ export class booksController {
   }
   
   @Get()
-  getAll(): Product[] {
+  async getAll(): Promise<Book[]> {
     return this.booksService.getAll();
   }
 
   @Get(':id')
-  getById(@Param() params): Product {
+  async getById(@Param() params): Promise<Book> {
     return this.booksService.getById(params.id);
   }
 
   @Post()
-  create(@Body() product: Product) {
-    product.id = 100;
-    this.booksService.create(product);
+  async create(@Body() book: Book) {
+    book.id = 100;
+    this.booksService.create(book);
   }
 
   @Put()
-  update(@Body() product: Product): Product {
-    return this.booksService.update(product);
+  async update(@Body() book: Book): Promise<[number, Book[]]> {
+    return this.booksService.update(book);
   }
 
   @Delete(':id')
-  exclude(@Param() params) {
+  async exclude(@Param() params) {
     return this.booksService.exclud(params.id);
   }
 }

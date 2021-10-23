@@ -1,31 +1,37 @@
-import { Product } from "./books.model";
+
 import { Injectable } from "@nestjs/common";
+import { Book } from "./books.model";
 
 @Injectable()
 export class booksService {
-    books: Product[] = [
-        new Product('LIV01', "Livro TDD E BDD na prática", 29.90),
-        new Product('LIV02', "Iniciando com Fluter", 39.90),
-        new Product('LIV03', "Inteligencia artificial", 29.90),
-    ];
+    constructor(
+        @InjectModel(Book)
+        private bookModel: typeof Book
+    ){}
 
-    getAll(): Product[] {
-        return this.books;
+    async getAll(): Promise<Book[]> {
+        return this.bookModel.findAll();
     }
 
-    getById(id: number): Product {
-        return this.books[0];
+    async getById(id: number):  Promise<Book> {
+        return this.bookModel.findByPk(id);
     }
 
-    create(product: Product) {
-        this.books.push(product);
+    async create(book: Book) {
+        this.bookModel.create(book);
     }
 
-    update(product: Product): Product {
-        return product;
+    async update(book: Book):  Promise<[number, Book[]]> {
+        return this.bookModel.update(book,
+            {
+                where: {
+                    id: book.id
+                }
+            })
     }
 
-    exclud(id: number) {
-        this.books.pop();
+    async exclud(id: number) {
+        const book: Book = await this.getById(id);
+        this.bookModel.destroy();
     }
 }
